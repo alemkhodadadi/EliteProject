@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using EliteBlog.Domain.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var pageRoute = ViewContext.RouteData.Values.Values.ToList(); // Values[] produces objects, so cast is needed
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EliteBlog</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header style="position: sticky; top: 0px; z-index: 2">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EliteBlog</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (SignInManager.IsSignedIn(User) && (pageRoute[0].ToString() == "Home" && pageRoute[1].ToString() == "Index"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Create">Create Post</a>
+                            </li>
+                        }
+
+                        @if (pageRoute[0].ToString() == "Home" && pageRoute[1].ToString() == "Details")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Home" asp-action="Index">Back</a>
+                            </li>
+                        }
+                        @if (SignInManager.IsSignedIn(User) && (pageRoute[0].ToString() == "Home" && pageRoute[1].ToString() == "Details"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Edit" asp-route-id="@Model.ID">Edit</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    @*<div>
+        @if (pageRoute[0].ToString() == "Home" && pageRoute[1].ToString() == "Index")
+        {
+            @Html.Partial("_FilterPartial", piValue)
+        }*@
+
+
+        <main role="main" class="pb-3 ">
+            @RenderBody()
+        </main>
+    @*</div>*@
+    
+
+    <footer class="border-top footer text-muted position-fixed bg-white" style="bottom: 0px">
+        <div class="container">
+            &copy; 2022 - EliteBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-select.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
