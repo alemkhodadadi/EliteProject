@@ -35,7 +35,10 @@ namespace EliteBlog
                 .AddDefaultUI();
             services.AddApplicationLayer();
             services.AddRepository(Configuration);
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EliteBlog", Version = "v1" }); //Why you add swagger?
