@@ -179,7 +179,7 @@ DocProject/Help/html
 # Click-Once directory
 publish/
 
-EliteBlog\wwwroot\images\uploads/
+EliteBlog/wwwroot/images/uploads/*
 
 
 # Publish Web Output
