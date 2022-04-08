@@ -11,7 +11,6 @@
     var filteredCategory = (dynamic)ViewData["CurrentCategoryFilter"];
 }
 <div class="sidebar p-3 m-3 ml-2" style="background-color: white; border: solid 2px lightgrey; border-radius: 10px">
-    <span>filter by:</span>
     <form class="mt-2" id="filterForm" asp-action="Index" asp-controller="Home" method="get">
         <div class="form-group">
             <select class="form-control" name="CategoryID" id="filterCategory" title="by category">
@@ -19,9 +18,8 @@
         </div>
         @if (filteredCategory != null)
         {
-            <div class="form-group">
-        
-                <button class="btn btn-primary m-0 p-0"><i class="fa fa-close"></i> @filteredCategory.Title</button>
+            <div class="form-group" id="filterCategoryFormGroup">
+                <button class="btn btn-outline-info p-1" style="font-size: 12px" type="button" onclick="clearCategoryFilter()"><i class="fa fa-window-close"></i> @filteredCategory.Title</button>
             </div>
         }
         <div class="form-group">
@@ -29,9 +27,9 @@
         </div>
         @if (searchedString != null)
         {
-            <div class="form-group">
-                <button class="btn btn-primary m-0 p-0"><i class="fa fa-close"></i> @searchedString</button>
-            </div>
+        <div class="form-group">
+            <button class="btn btn-outline-info p-1" style="font-size: 12px" onclick="clearStringFilter()"><i class="fa fa-window-close"></i> @searchedString</button>
+        </div>
         }
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Filter</button>
@@ -60,7 +58,9 @@
                             <span class="text-info" style="font-size: 12px">@DateTime.Parse(item.CreatedAt).ToLongDateString()</span>
                         </div>
                     </div>
-                    <img class="card-img-top h-50" style="max-height: 200px" onerror="this.onerror=null;this.src='/images/brokenImage.png';" src="~/images/uploads/@item.Photo" alt="Card image cap">
+                    <div class="d-flex justify-content-center align-items-center" style="max-height: 200px" >
+                        <img class="h-100 w-auto" onerror="this.onerror=null;this.src='/images/brokenImage.png';" src="~/images/uploads/@item.Photo" alt="Card image cap">
+                    </div>
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">
                             @if (item.Title.Length <= 20)
@@ -151,6 +151,21 @@
                 }
             }, 600)
         })
+
+        function clearCategoryFilter() {
+            $("#filterCategory").val([]);
+            $("#filterCategory").html();
+            $("#filterForm").submit();
+        }
+
+        $("#filterCategory").on("change", function () {
+            $("#filterCategoryFormGroup").addClass("d-none");
+        })
+
+        function clearStringFilter() {
+            $("#filterText").val('');
+            $("#filterForm").submit();
+        }
     </script>
 }
 
